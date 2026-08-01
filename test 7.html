@@ -1,0 +1,1693 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/png" href="logo.png">
+<title>PreciousT Collection — Rental Catalogue</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#181310;
+    --card:#211A16;
+    --cream:#F3ECE2;
+    --rose:#B98F73;
+    --rose-light:#D8B79A;
+    --wine:#5E2233;
+    --line:rgba(243,236,226,0.14);
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    background:var(--ink);
+    color:var(--cream);
+    font-family:'Jost',sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,.serif{font-family:'Cormorant Garamond',serif;}
+  a{color:inherit;}
+
+  /* HERO */
+  .hero{
+    padding:72px 24px 40px;
+    text-align:center;
+    border-bottom:1px solid var(--line);
+    position:relative;
+    overflow:hidden;
+  }
+  .hero::before{
+    content:"";
+    position:absolute; inset:0;
+    background:radial-gradient(ellipse at 50% 0%, rgba(185,143,115,0.16), transparent 60%);
+    pointer-events:none;
+  }
+  .eyebrow{
+    letter-spacing:0.35em;
+    font-size:11px;
+    text-transform:uppercase;
+    color:var(--rose-light);
+    margin-bottom:18px;
+  }
+  .hero h1{
+    font-size:clamp(40px,7vw,72px);
+    font-weight:500;
+    letter-spacing:0.01em;
+    line-height:1.05;
+  }
+  .hero p{
+    max-width:480px;
+    margin:18px auto 0;
+    color:rgba(243,236,226,0.65);
+    font-size:15px;
+    font-weight:300;
+    line-height:1.6;
+  }
+
+
+  /* ===== CATEGORY LANDING ===== */
+  .cat-grid{
+    max-width:1100px;
+    margin:0 auto;
+    padding:56px 24px 100px;
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:24px;
+  }
+  @media (max-width:640px){ .cat-grid{ grid-template-columns:1fr; } }
+
+  .cat-tile{
+    position:relative;
+    border:1px solid var(--line);
+    background:linear-gradient(160deg,#241C17,#161110);
+    padding:44px 32px;
+    min-height:220px;
+    display:flex; flex-direction:column; justify-content:flex-end;
+    gap:8px;
+    text-decoration:none;
+    overflow:hidden;
+    cursor:pointer;
+    transition:transform .3s ease, border-color .3s ease;
+  }
+  .cat-tile:hover{ transform:translateY(-5px); border-color:var(--rose); }
+  .cat-tile::before{
+    content:"";
+    position:absolute; inset:0;
+    background:radial-gradient(circle at 85% 15%, rgba(185,143,115,0.18), transparent 55%);
+    pointer-events:none;
+  }
+  .cat-index{
+    position:absolute; top:20px; right:24px;
+    font-family:'Cormorant Garamond',serif;
+    font-style:italic;
+    font-size:15px;
+    color:rgba(243,236,226,0.3);
+  }
+  .cat-tile h2{
+    font-size:34px;
+    font-weight:500;
+  }
+  .cat-tile .cat-tagline{
+    font-size:13px;
+    color:rgba(243,236,226,0.55);
+    font-weight:300;
+    max-width:320px;
+  }
+  .cat-tile .cat-count{
+    margin-top:10px;
+    font-size:11px;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:var(--rose-light);
+  }
+  .cat-tile .cat-arrow{
+    position:absolute; bottom:28px; right:28px;
+    font-size:20px;
+    color:var(--rose-light);
+    transition:transform .25s ease;
+  }
+  .cat-tile:hover .cat-arrow{ transform:translateX(6px); }
+
+  /* ===== CATEGORY PAGE ===== */
+  .cat-header{
+    max-width:1280px;
+    margin:0 auto;
+    padding:40px 24px 0;
+  }
+  .back-link{
+    display:inline-flex; align-items:center; gap:8px;
+    font-size:12px; letter-spacing:0.1em; text-transform:uppercase;
+    color:rgba(243,236,226,0.55);
+    text-decoration:none;
+    margin-bottom:22px;
+    transition:color .2s ease;
+  }
+  .back-link:hover{ color:var(--rose-light); }
+
+  /* FILTER BAR */
+  .filters{
+    position:sticky; top:0; z-index:20;
+    background:rgba(24,19,16,0.92);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+    padding:16px 24px;
+    display:flex; gap:12px; flex-wrap:wrap;
+    align-items:center;
+    justify-content:center;
+    margin-top:28px;
+  }
+  .filters input, .filters select{
+    background:transparent;
+    border:1px solid var(--line);
+    color:var(--cream);
+    padding:9px 14px;
+    border-radius:2px;
+    font-family:'Jost',sans-serif;
+    font-size:13px;
+    font-weight:300;
+    outline:none;
+  }
+  .filters input{min-width:180px;}
+  .filters input::placeholder{color:rgba(243,236,226,0.4);}
+  .filters select{cursor:pointer;}
+  .filters option{background:var(--ink);}
+  .count{
+    font-size:12px;
+    letter-spacing:0.08em;
+    color:rgba(243,236,226,0.5);
+    text-transform:uppercase;
+    margin-left:auto;
+  }
+
+  /* GRID */
+  .grid{
+    max-width:1280px;
+    margin:0 auto;
+    padding:40px 24px 100px;
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(240px,1fr));
+    gap:28px;
+  }
+  .card{
+    background:var(--card);
+    border:1px solid var(--line);
+    position:relative;
+    display:flex; flex-direction:column;
+    transition:transform .25s ease, border-color .25s ease;
+  }
+  .card:hover{ transform:translateY(-4px); border-color:var(--rose); }
+
+  .tag{
+    position:absolute; top:12px; left:0;
+    background:var(--wine);
+    color:var(--cream);
+    font-size:10px;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    padding:5px 12px 5px 10px;
+    z-index:4;
+    clip-path:polygon(0 0,100% 0,88% 50%,100% 100%,0 100%);
+  }
+  .tag.unavailable{ background:#3a2f2a; color:rgba(243,236,226,0.55); }
+
+  /* IMAGE SLIDER (multiple photos per dress) */
+  .img-slider{
+    position:relative;
+    aspect-ratio:3/4;
+    width:100%;
+    overflow:hidden;
+    background:linear-gradient(160deg, #2b221c, #17120f);
+  }
+  .img-track{
+    display:flex;
+    width:100%; height:100%;
+    overflow-x:auto;
+    scroll-snap-type:x mandatory;
+    scrollbar-width:none;
+    -ms-overflow-style:none;
+  }
+  .img-track::-webkit-scrollbar{ display:none; }
+  .img-slide{
+    flex:0 0 100%;
+    width:100%; height:100%;
+    scroll-snap-align:start;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .img-slide img{ width:100%; height:100%; object-fit:cover; display:block; }
+  .img-nav{
+    position:absolute; top:50%; transform:translateY(-50%);
+    background:rgba(24,19,16,0.55);
+    border:none; color:var(--cream);
+    width:26px; height:26px; border-radius:50%;
+    cursor:pointer; font-size:14px;
+    display:flex; align-items:center; justify-content:center;
+    opacity:0; transition:opacity .2s ease;
+    z-index:3;
+  }
+  .img-slider:hover .img-nav{ opacity:1; }
+  .img-nav.prev{ left:8px; }
+  .img-nav.next{ right:8px; }
+  .img-dots{
+    position:absolute; bottom:8px; left:0; right:0;
+    display:flex; justify-content:center; gap:5px;
+    z-index:3;
+  }
+  .img-dot{
+    width:5px; height:5px; border-radius:50%;
+    background:rgba(243,236,226,0.4);
+    transition:width .2s ease, background .2s ease;
+  }
+  .img-dot.active{ background:var(--rose-light); width:14px; border-radius:3px; }
+  .img-placeholder{
+    font-family:'Cormorant Garamond',serif;
+    font-style:italic;
+    color:rgba(243,236,226,0.25);
+    font-size:14px;
+    text-align:center;
+    padding:20px;
+  }
+
+  .info{ padding:18px 18px 20px; display:flex; flex-direction:column; gap:8px; flex:1; }
+  .info h3{ font-size:22px; font-weight:500; }
+  .meta{ font-size:12px; color:rgba(243,236,226,0.55); letter-spacing:0.03em; }
+  .sizes{ font-size:12px; color:var(--rose-light); margin-top:2px; }
+  .price{ font-size:15px; margin-top:6px; color:var(--cream); font-weight:400; }
+  .price span{ color:rgba(243,236,226,0.5); font-size:12px; }
+
+  .reserve{
+    margin-top:12px;
+    display:inline-block;
+    width:100%;
+    text-align:center;
+    background:transparent;
+    border:1px solid var(--rose);
+    color:var(--rose-light);
+    text-decoration:none;
+    padding:10px 0;
+    font-size:12px;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    font-family:'Jost',sans-serif;
+    cursor:pointer;
+    outline:none;
+    transition:background .2s ease,color .2s ease;
+  }
+  .reserve:hover{ background:var(--rose); color:var(--ink); }
+
+  /* ===== BOOKING MODAL ===== */
+  .modal-overlay{
+    position:fixed; inset:0; z-index:200;
+    background:rgba(10,8,7,0.82);
+    backdrop-filter:blur(4px);
+    display:none;
+    align-items:center; justify-content:center;
+    padding:20px;
+  }
+  .modal-overlay.open{ display:flex; }
+  .modal-box{
+    background:var(--card);
+    border:1px solid var(--line);
+    width:100%; max-width:360px;
+    max-height:90vh;
+    overflow-y:auto;
+    padding:30px 24px 24px;
+    position:relative;
+  }
+  .modal-close{
+    position:absolute; top:14px; right:14px;
+    background:transparent; border:none;
+    color:rgba(243,236,226,0.5);
+    font-size:16px; line-height:1;
+    cursor:pointer; padding:4px;
+  }
+  .modal-close:hover{ color:var(--rose-light); }
+  .modal-header{ margin-bottom:18px; text-align:center; }
+  .modal-dress-name{ font-family:'Cormorant Garamond',serif; font-size:24px; font-weight:500; }
+  .modal-sub{ font-size:12px; color:rgba(243,236,226,0.55); margin-top:4px; }
+  .cal-nav{ display:flex; align-items:center; justify-content:space-between; margin-bottom:12px; }
+  .cal-nav button{
+    background:transparent; border:1px solid var(--line);
+    color:var(--cream); width:30px; height:30px;
+    cursor:pointer; font-size:13px; font-family:'Jost',sans-serif;
+  }
+  .cal-nav button:hover:not(:disabled){ border-color:var(--rose); }
+  .cal-nav button:disabled{ opacity:0.25; cursor:not-allowed; }
+  .cal-month-label{
+    font-size:12px; letter-spacing:0.1em; text-transform:uppercase; color:var(--rose-light);
+  }
+  .cal-weekdays{
+    display:grid; grid-template-columns:repeat(7,1fr);
+    text-align:center; font-size:10px;
+    color:rgba(243,236,226,0.4); margin-bottom:6px;
+  }
+  .cal-grid{ display:grid; grid-template-columns:repeat(7,1fr); gap:4px; }
+  .cal-day{
+    aspect-ratio:1; display:flex; align-items:center; justify-content:center;
+    font-size:12px; color:var(--cream);
+    background:rgba(243,236,226,0.04);
+    border:1px solid transparent;
+    cursor:pointer;
+  }
+  .cal-day:hover:not(.disabled):not(.booked){ border-color:var(--rose); }
+  .cal-day.empty{ visibility:hidden; cursor:default; background:transparent; }
+  .cal-day.disabled{ color:rgba(243,236,226,0.2); cursor:not-allowed; background:transparent; }
+  .cal-day.booked{
+    background:rgba(94,34,51,0.45); color:rgba(243,236,226,0.45);
+    cursor:not-allowed; text-decoration:line-through;
+  }
+  .cal-day.selected{ background:var(--rose); color:var(--ink); font-weight:600; border-color:var(--rose); }
+  .cal-legend{
+    display:flex; gap:14px; justify-content:center; flex-wrap:wrap;
+    margin-top:14px; font-size:10px; color:rgba(243,236,226,0.55);
+  }
+  .cal-legend .dot{ display:inline-block; width:8px; height:8px; margin-right:4px; border-radius:50%; vertical-align:middle; }
+  .dot-open{ background:rgba(243,236,226,0.15); }
+  .dot-booked{ background:var(--wine); }
+  .dot-selected{ background:var(--rose); }
+  .cal-selected-info{
+    text-align:center; font-size:12px; color:rgba(243,236,226,0.6);
+    margin-top:14px; min-height:16px;
+  }
+  .modal-confirm{
+    width:100%; margin-top:14px; padding:12px 0;
+    background:var(--rose); border:1px solid var(--rose); color:var(--ink);
+    font-size:12px; letter-spacing:0.14em; text-transform:uppercase;
+    font-family:'Jost',sans-serif; cursor:pointer;
+  }
+  .modal-confirm:disabled{
+    background:transparent; color:rgba(243,236,226,0.3);
+    border-color:rgba(243,236,226,0.2); cursor:not-allowed;
+  }
+
+  .empty{
+    text-align:center;
+    padding:80px 24px;
+    color:rgba(243,236,226,0.5);
+    font-family:'Cormorant Garamond',serif;
+    font-style:italic;
+    font-size:20px;
+  }
+
+  footer{
+    text-align:center;
+    padding:32px 24px 48px;
+    color:rgba(243,236,226,0.35);
+    font-size:11px;
+    letter-spacing:0.1em;
+    text-transform:uppercase;
+  }
+
+  /* LOADING SCREEN */
+  #loader{
+    position:fixed; inset:0; z-index:100;
+    background:var(--ink);
+    display:flex; flex-direction:column;
+    align-items:center; justify-content:center;
+    gap:22px;
+    transition:opacity 0.6s ease, visibility 0.6s ease;
+  }
+  #loader.hidden{
+    opacity:0;
+    visibility:hidden;
+    pointer-events:none;
+  }
+  #loader::before{
+    content:"";
+    position:absolute; inset:0;
+    background:radial-gradient(ellipse at 50% 40%, rgba(185,143,115,0.14), transparent 65%);
+    pointer-events:none;
+  }
+  .loader-mark{
+    position:relative;
+    width:80px; height:80px;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .loader-ring{ position:absolute; inset:0; border-radius:50%; border:1px solid var(--line); }
+  .loader-ring::before{
+    content:"";
+    position:absolute; inset:-1px;
+    border-radius:50%;
+    border:1px solid transparent;
+    border-top-color:var(--rose);
+    border-right-color:var(--rose-light);
+    animation:spin 1.4s linear infinite;
+  }
+  .loader-initial{
+    font-family:'Cormorant Garamond',serif;
+    font-style:italic;
+    font-size:28px;
+    color:var(--rose-light);
+  }
+  @keyframes spin{ to{ transform:rotate(360deg); } }
+
+  .loader-word{
+    font-family:'Cormorant Garamond',serif;
+    font-size:24px;
+    letter-spacing:0.08em;
+    color:var(--cream);
+  }
+  .loader-sub{
+    font-size:10px;
+    letter-spacing:0.28em;
+    text-transform:uppercase;
+    color:rgba(243,236,226,0.4);
+    margin-top:-12px;
+  }
+  .loader-bar-track{
+    width:200px;
+    height:1px;
+    background:var(--line);
+    position:relative;
+    overflow:hidden;
+  }
+  .loader-bar-fill{
+    position:absolute; left:0; top:0; bottom:0;
+    width:0%;
+    background:var(--rose);
+    transition:width 0.25s ease;
+  }
+  .loader-status{
+    font-size:10px;
+    letter-spacing:0.15em;
+    text-transform:uppercase;
+    color:rgba(243,236,226,0.35);
+    min-height:14px;
+  }
+
+  
+  /* GUIDELINES NAV BUTTON */
+  .guide-btn{
+    display:inline-flex; align-items:center; gap:8px;
+    margin-top:24px;
+    padding:11px 26px;
+    border:1px solid var(--rose);
+    color:var(--rose-light);
+    text-decoration:none;
+    font-size:11px;
+    letter-spacing:0.16em;
+    text-transform:uppercase;
+    transition:background .2s ease, color .2s ease;
+    position:relative;
+    z-index:1;
+  }
+  .guide-btn:hover{ background:var(--rose); color:var(--ink); }
+
+  /* GUIDELINES PAGE */
+  .guide-wrap{
+    max-width:760px;
+    margin:0 auto;
+    padding:44px 24px 100px;
+  }
+  .guide-section{
+    border-top:1px solid var(--line);
+    padding:32px 0;
+  }
+  .guide-section:first-of-type{ border-top:none; }
+  .guide-section h2{
+    font-size:26px;
+    font-weight:500;
+    margin-bottom:14px;
+  }
+  .guide-section p{
+    color:rgba(243,236,226,0.7);
+    font-size:14px;
+    font-weight:300;
+    line-height:1.75;
+    margin-bottom:10px;
+  }
+  .guide-section ul{
+    list-style:none;
+    display:flex; flex-direction:column; gap:10px;
+  }
+  .guide-section li{
+    color:rgba(243,236,226,0.7);
+    font-size:14px;
+    font-weight:300;
+    line-height:1.6;
+    padding-left:20px;
+    position:relative;
+  }
+  .guide-section li::before{
+    content:"—";
+    position:absolute; left:0;
+    color:var(--rose);
+  }
+  .price-table{
+    width:100%;
+    border-collapse:collapse;
+    margin-top:6px;
+  }
+  .price-table th{
+    text-align:left;
+    font-size:10px;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    color:rgba(243,236,226,0.45);
+    font-weight:400;
+    padding:0 0 12px;
+    border-bottom:1px solid var(--line);
+  }
+  .price-table td{
+    padding:14px 0;
+    border-bottom:1px solid var(--line);
+    font-size:14px;
+    font-weight:300;
+  }
+  .price-table td:first-child{
+    font-family:'Cormorant Garamond',serif;
+    font-size:18px;
+    font-weight:500;
+  }
+  .price-table td:last-child, .price-table th:last-child{ text-align:right; color:var(--rose-light); }
+  .loader-status{
+    font-size:10px;
+    letter-spacing:0.15em;
+    text-transform:uppercase;
+    color:rgba(243,236,226,0.35);
+    min-height:14px;
+  }
+
+</style>
+</head>
+<body>
+
+<div id="loader">
+  <div class="loader-mark">
+    <div class="loader-ring"></div>
+    <div class="loader-initial">P</div>
+  </div>
+  <div>
+    <div class="loader-word" style="text-align:center;">PreciousT Collection</div>
+    <div class="loader-sub" style="text-align:center;transform: translateY(20px);">The Wardrobe</div>
+  </div>
+  <div class="loader-bar-track"><div class="loader-bar-fill" id="loaderBarFill"></div></div>
+  <div class="loader-status" id="loaderStatus">Preparing your wardrobe…</div>
+</div>
+
+<div class="hero" id="hero">
+  <div class="eyebrow">PreciousT Collection</div>
+  <h1 id="heroTitle">The Wardrobe</h1>
+  <p id="heroSub">Choose a category to browse. Tap Reserve on any dress — your request goes straight to us on WhatsApp.</p>
+  <a href="#/guidelines" class="guide-btn">Prices &amp; Rental Guidelines →</a>
+</div>
+
+<div id="app"></div>
+
+<div class="modal-overlay" id="bookingModal">
+  <div class="modal-box">
+    <button class="modal-close" id="modalCloseBtn" aria-label="Close">✕</button>
+    <div class="modal-header">
+      <div class="modal-dress-name" id="modalDressName"></div>
+      <div class="modal-sub">Pick a date to reserve this dress</div>
+    </div>
+    <div class="cal-nav">
+      <button id="calPrev" aria-label="Previous month">←</button>
+      <div class="cal-month-label" id="calMonthLabel"></div>
+      <button id="calNext" aria-label="Next month">→</button>
+    </div>
+    <div class="cal-weekdays">
+      <span>S</span><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span>
+    </div>
+    <div class="cal-grid" id="calGrid"></div>
+    <div class="cal-legend">
+      <span><i class="dot dot-open"></i>Available</span>
+      <span><i class="dot dot-booked"></i>Booked</span>
+      <span><i class="dot dot-selected"></i>Selected</span>
+    </div>
+    <div class="cal-selected-info" id="calSelectedInfo"></div>
+    <button class="modal-confirm" id="calConfirm" disabled>Select a date to continue</button>
+  </div>
+</div>
+
+<footer>PreciousT Collection · Rentals by request · Updated regularly</footer>
+
+<script>
+/* ============================================================
+   CONFIG — edit these two lines
+   ============================================================ */
+const WHATSAPP_NUMBER = "27761971848"; // replace with PreciousT's WhatsApp number, country code no + or 0-prefix
+const BRAND_NAME = "PreciousT Collection";
+const BOOKING_DURATION_DAYS = 4; // how many days a dress stays "out" after each booking start date (set anywhere from 3-5)
+
+/* ============================================================
+   CATEGORIES — the 4 tiers clients choose from on the landing page.
+   Edit the tagline text if you want, but keep the "key" values
+   exactly matching what you use in each dress's "category" field below.
+   ============================================================ */
+const CATEGORIES = [
+  { key: "Signature Dresses", tagline: "Our most requested, one-of-a-kind pieces" },
+  { key: "Premium Dresses",   tagline: "Top-tier gowns for standout occasions" },
+  { key: "Short Dresses",     tagline: "Cocktail-length, easy elegance" },
+  { key: "Standard Dresses",  tagline: "Everyday rental essentials" }
+];
+
+/* ============================================================
+   PRICING & GUIDELINES PAGE — edit all text/prices freely.
+   pricingTiers rows show in a simple table; guidelineSections
+   are free-text blocks, each with a heading and either
+   paragraph text or a bullet list.
+   ============================================================ */
+const PRICING_TIERS = [
+  { tier: "Standard Dresses",  price: "R2 000" },
+  { tier: "Short Dresses",     price: "R2 500" },
+  { tier: "Premium Dresses",   price: "R3 500" },
+  { tier: "Signature Dresses", price: "R4 000" },
+  { tier: "Security Deposit (refundable)", price: "R500 KZN · R1000 Out of Province" }
+];
+
+const GUIDELINE_SECTIONS = [
+  {
+    heading: "About PreciousT Collection",
+    type: "paragraph",
+    text: "At PreciousT Collection, each dress is chosen for its elegance, quality, and ability to make you feel unforgettable. All dresses are maintained with professional care to ensure they arrive in pristine condition for your event."
+  },
+  {
+    heading: "Booking Requirements",
+    type: "list",
+    items: [
+      "A 50% deposit (or full payment)",
+      "Contact details",
+      "Confirmed event date",
+      "Bookings are secured once payments have been made"
+    ]
+  },
+  {
+    heading: "Fittings",
+    type: "list",
+    items: [
+      "Fittings will be scheduled upon request to ensure the dress suits you perfectly",
+      "We do your alterations"
+    ]
+  },
+  {
+    heading: "Rental Duration",
+    type: "list",
+    items: [
+      "All rentals follow the standard PreciousT Collection period: 3–5 days (depending on the event)",
+      "Pick-up and return dates will be confirmed during booking",
+      "Late returns incur a late fee per day"
+    ]
+  },
+  {
+    heading: "Contact Info",
+    type: "list",
+    items: [
+      "PreciousT Collection — Elegant Custom & Rental Dresses",
+      "Phone: +27 72 029 1850",
+      "Email: Precioustcollections@gmail.com",
+      "Location: 237 Bartle Road, Umbilo, Durban",
+      "Instagram: @precioust_collection",
+      "TikTok: @precioustcollection"
+    ]
+  }
+];
+
+/* ============================================================
+   DRESSES — this is your catalogue data.
+   To add a new dress, copy one {...} block below and edit it.
+
+   Fields:
+   name      – dress name
+   category  – must be exactly one of: "Signature Dresses", "Premium Dresses",
+               "Short Dresses", "Standard Dresses"
+   colour    – main colour, shown under the name
+   sizes     – array of available sizes, e.g. ["S","M","L"]
+   price     – rental price as a number (no currency symbol)
+   image     – paste a direct image link here (see note below).
+               Leave as "" to show a placeholder until you add a photo.
+   images    – OPTIONAL array of extra photo links for this dress, e.g.
+               ["https://.../photo1","https://.../photo2","https://.../photo3"].
+               If you add this, customers can slide through all the photos
+               on the card. You can leave "image" as-is too — it's fine to
+               have both; if "images" is present it's used instead of "image".
+   bookings  – OPTIONAL array of dates this dress has already been booked for,
+               e.g. bookings: [ { start: "2026-08-12" } ].
+               Each booking automatically blocks the start date PLUS the next
+               BOOKING_DURATION_DAYS days (set near the top of this file,
+               currently 4 — the usual time a dress is out with a client).
+               Add a "days" field to override that for one booking only, e.g.
+               { start: "2026-09-01", days: 5 }.
+               While any of those days are today, the card shows a
+               "Currently Out" tag — but customers can still open the
+               calendar and pick any date that isn't blocked.
+               Leave this out entirely (or use []) if nothing is booked yet.
+               (The old "available: true/false" flag is no longer used.)
+
+   HOW TO GET A DIRECT GOOGLE DRIVE IMAGE LINK:
+   1. Right-click the photo in Drive → Share → "Anyone with the link"
+   2. Copy the file ID from the share link (the long code between /d/ and /view)
+   3. Use this format: https://lh3.googleusercontent.com/d/FILE_ID
+   (Regular Drive share links won't display as images — this format will.)
+
+   NOTE ON CATEGORIES: I've placed the 6 sample dresses below across all
+   4 tiers as a starting example. "Premium"/"Signature" vs "Short"/"Standard"
+   can overlap in real life (a short dress could also be premium priced) —
+   since each dress can only sit in one category here, decide which single
+   bucket best fits each real dress as you add them.
+   ============================================================ */
+
+const dresses = [
+    /* premium dresses */
+  {
+    name: "Anelisa Dress",
+    category: "Premium Dresses",
+    colour: "Royale Blue",
+    sizes: ["Custom"],
+    price: 3500,
+    available: false,
+    images:  ["https://lh3.googleusercontent.com/d/1Dzqa-N2KR1EbRiPBg3_362yPoFL4gd3F",
+             "https://lh3.googleusercontent.com/d/1_67o6V_FDlA92EjtyV0jzGlqP_yQJXsB",],
+    bookings: [ { start: "2026-08-01",days: 5 } ]
+  },
+  {
+    name: "Enhle's Dress",
+    category: "Premium Dresses",
+    colour: "Black",
+    sizes: ["M","L","XL"],
+    price: 3500,
+    available: false,
+    images: ["https://lh3.googleusercontent.com/d/1g256Xa0iyOClW__frk_20_uhzucj5BeT",
+             "https://lh3.googleusercontent.com/d/1yQtcDd99POgvIoCIAymu6s7HE1CzRLE4",],
+    bookings: [ { start: "2026-08-06",days: 5 } ]         
+    
+  },
+  {
+    name: "Imani Dress",
+    category: "Premium Dresses",
+    colour: "Rose Gold",
+    sizes: ["S","M"],
+    price: 3500,
+    available: false,
+    images:["https://lh3.googleusercontent.com/d/1Y88Oisa9lPhNJTsu_8vKuxarYZL36DHy",
+            "https://lh3.googleusercontent.com/d/1pac25diS7aakZYrE-ga6DB644rObz39F",],
+  },
+  
+  {
+    name: "Nothando Dress",
+    category: "Premium Dresses",
+    colour: "Silver",
+    sizes: ["S","M"],
+    price: 3500,
+    available: false,
+    images: ["https://lh3.googleusercontent.com/d/19UF9NfhmCje932kikzvc972aYU4SvE2R",
+             "https://lh3.googleusercontent.com/d/1MYM4mxKg6AQgTMAyrrAOj9jP3fHjV39v",],
+             bookings: [ { start: "2026-07-31",days: 5 },{ start: "2026-08-14",days: 5 }]
+  },
+  {
+    name: "Nosi Dress",
+    category: "Premium Dresses",
+    colour: "Navy",
+    sizes: ["S","M"],
+    price: 3500,
+    available: false,
+    images: ["https://lh3.googleusercontent.com/d/1WLjZ2uwCKNdJAZWAdWQPCQRyCU08QwS5",
+             "https://lh3.googleusercontent.com/d/1ykgKOqYs6lj1SsR7ZdOdvfoMt8an1oe7",],
+             bookings: [ { start: "2026-08-28",days: 5 },{ start: "2026-08-08",days: 5 }]
+  },
+   {
+    name: "Precious Aurora Blush",
+    category: "Premium Dresses",
+    colour: "Aurora Blush",
+    sizes: ["S","M"],
+    price: 3500,
+    available: false,
+    images: ["https://lh3.googleusercontent.com/d/1ge_DHd2JIix_Z5c3oruuhnx_meR9aRpB",
+             "https://lh3.googleusercontent.com/d/1zFD1woAn_NpYB5Wkvj0yFO6kYZFsi99K",],
+  },
+   {
+    name: "Precious Black",
+    category: "Premium Dresses",
+    colour: "Black",
+    sizes: ["S","M"],
+    price: 3500,
+    available: false,
+    images:["https://lh3.googleusercontent.com/d/1-WvEr0Mo5VZfIKg9cXv6N3_eKuo4JS5Y",
+            "https://lh3.googleusercontent.com/d/1GUS1mZpAtcEKvr1Ct665P9HN9uNZSzV3",],
+  },
+  {
+    name: "Precious Onyx Dress",
+    category: "Premium Dresses",
+    colour: "Black",
+    sizes: ["S","M"],
+    price: 3500,
+    available: false,
+    images:["https://lh3.googleusercontent.com/d/1G8VN8tUyrAMU6fggXUTzL3oMDxKueHI3",
+            "https://lh3.googleusercontent.com/d/1RzdYnzkx5zdJsJuhl-NbQ45DNVK7KMQK",],
+  },
+   {
+    name: "Precious Bloom",
+    category: "Premium Dresses",
+    colour: "Pale Pink",
+    sizes: ["S","M"],
+    price: 3500,
+    available: false,
+    images: ["https://lh3.googleusercontent.com/d/1hRVrqsTlhCeYA8UAuhP91vhIt4PakM-6",
+             "https://lh3.googleusercontent.com/d/1bnuGy3kNlbPUO8odwIBvhzL6mH1hoaHV",],
+             bookings: [ { start: "2026-09-23",days: 5 } ]
+  },
+   {
+    name: "Precious Blue",
+    category: "Premium Dresses",
+    colour: "Blue",
+    sizes: ["S","M"],
+    price: 3500,
+    available: false,
+    images: ["https://lh3.googleusercontent.com/d/1ZRoygog7uKbCX5xuAtlnQSpGcY8EQpko",
+             "https://lh3.googleusercontent.com/d/1p4eIKkyZ9HksL9VmGFAX6S1py8jo-kob",],
+    bookings:[{ start: "2026-07-31",days: 5 } ]
+  },
+   {
+    name: "Precious Cascade ",
+    category: "Premium Dresses",
+    colour: "Cascade",
+    sizes: ["S","M"],
+    price: 3500,
+    available: false,
+    images: ["https://lh3.googleusercontent.com/d/1bneKMQPCkTmiJRXEbJZPdYRXFdfBZw66",
+             "https://lh3.googleusercontent.com/d/1uNsRnh8r-xr6pT5cA2R_Gm1NhlyfVYbi",]
+  },
+   {
+    name: "Precious Earthly Brown",
+    category: "Premium Dresses",
+    colour: "Earthly Brown",
+    sizes: ["S","M"],
+    price: 3500,
+    available: false,
+    images: ["https://lh3.googleusercontent.com/d/17NQHMMVbGuyhKME0FGQWxdFtXsQNBFyT",
+             "https://lh3.googleusercontent.com/d/1omi1pWVU6pWddslIXOL1A2RscVbHTQog",]
+  },
+   {
+    name: "Helen Dress",
+    category: "Premium Dresses",
+    colour: "Nude",
+    sizes: ["S","M"],
+    price: 3500,
+    available: false,
+    images: ["https://lh3.googleusercontent.com/d/1e5JQmyMq_NRHmnqLucQ6xnIWDLVBAJBT",
+             "https://lh3.googleusercontent.com/d/13jYTcZV-8wW2-zG8QfodHBB43zL4Wyz3",
+             "https://lh3.googleusercontent.com/d/1kMqckT2sNmflXEyZvMRN-iuQQBrRrVuJ",],
+    bookings: [ { start: "2026-07-31",days: 5 } ]
+  },
+   {
+    name: "Precious Maroon",
+    category: "Premium Dresses",
+    colour: "Maroon",
+    sizes: ["S","M"],
+    price: 3500,
+    available: false,
+    images: ["https://lh3.googleusercontent.com/d/18vwdxD-_yT17Ozfv8u790YPWJtAPf1Vy",
+             "https://lh3.googleusercontent.com/d/1EAzgm59q-1lvvXgQTeezUNQLmffzlYRe",]
+  },
+   {
+    name: "Precious Navy",
+    category: "Premium Dresses",
+    colour: "Navy",
+    sizes: ["S","M"],
+    price: 3500,
+    available: false,
+    images: ["https://lh3.googleusercontent.com/d/1d2xGDlzaUVoDohrbZBKgtXVU4xdrZsLH",
+             "https://lh3.googleusercontent.com/d/1Dc1kulL8vNLJmsRJ_-XGmTq2JAwgqsUb",],
+    bookings:[{ start: "2026-08-09",days: 5 } ]
+  },
+   {
+    name: "Precious Nude Elan",
+    category: "Premium Dresses",
+    colour: "Nude",
+    sizes: ["S","M"],
+    price: 3500,
+    available: false,
+    images: ["https://lh3.googleusercontent.com/d/1qfVmrYyqZ5b3CZjLHqATgsVKxa70vyr8",
+             "https://lh3.googleusercontent.com/d/1fiOoUc1UrlWolzgI7GAY2yUvBkcyIBEE",]
+  },
+   {
+    name: "Precious Nude Dress",
+    category: "Premium Dresses",
+    colour: "Nude",
+    sizes: ["S","M"],
+    price: 3500,
+    available: false,
+    images: ["https://lh3.googleusercontent.com/d/1ovqUYGixA5dkVpvAcL_1ek4sXKS7azd4",
+             "https://lh3.googleusercontent.com/d/1bTphlTyitOFheyrlRW93aEcELLiDdFH0",]
+  },
+
+   {
+    name: "Precious Purple", 
+    category: "Premium Dresses",
+    colour: "Purple",
+    sizes: ["S","M"],
+    price: 3500,
+    available: false,
+    images: ["https://lh3.googleusercontent.com/d/1B-hY25YdXTxpsu4VSeTQ_LGVmeSYkgXq",
+             "https://lh3.googleusercontent.com/d/1xdbyaAvsqU9kGHJhCtdJBnVnA9gAsvMT"]
+  },
+   {
+    name: "Precious Red", 
+    category: "Premium Dresses",
+    colour: "Red",
+    sizes: ["S","M"],
+    price: 3500,
+    available: false,
+    images: ["https://lh3.googleusercontent.com/d/1eqwVNPe9xq3TeUswmmlvlJ72L25bW3eh",
+             "https://lh3.googleusercontent.com/d/1qTVHuv35ZpmL74r7xWX1ZUDsyYZOIAqb"],
+             bookings: [ { start: "2026-08-07",days: 5 } ]
+  },
+ {
+    name: "Precious Rose Royale", 
+    category: "Premium Dresses",
+    colour: "Rose Pink",
+    sizes: ["S","M"],
+    price: 3500,
+    available: false,
+    images: ["https://lh3.googleusercontent.com/d/1T-H9l-u83N5SIdfqrEe5n_MXqOutVZEA",
+             "https://lh3.googleusercontent.com/d/1syTXfGXf565udXcoVX_Kyvt5t1cUtuq3"]
+  },
+ {
+    name: "Precious Seraphine", 
+    category: "Premium Dresses",
+    colour: "Nude",
+    sizes: ["S","M"],
+    price: 3500,
+    available: false,
+    images: ["https://lh3.googleusercontent.com/d/19SFPiURWPs-p2wams8P2Fu_CwP2KswZR",
+             "https://lh3.googleusercontent.com/d/1OoTgZvPR0H4eherjeHeMo5TLmhvqz9sa"],
+    bookings:[{ start: "2026-08-13",days: 5 } ]         
+  },
+ {
+    name: "Precious Silver", 
+    category: "Premium Dresses",
+    colour: "Silver",
+    sizes: ["S","M"],
+    price: 3500,
+    available: false,
+    images: ["https://lh3.googleusercontent.com/d/1IN9W6jWSdGEwjx4UiOUNv_4C7uPYStkQ",
+             "https://lh3.googleusercontent.com/d/1M6LwvkIBs_YokQduDT8EF-3eLVULlN_j"]
+  },
+  {
+    name: "Precious Silverstone", 
+    category: "Premium Dresses",
+    colour: "Silverstone",
+    sizes: ["S","M"],
+    price: 3500,
+    available: false,
+    images: ["https://lh3.googleusercontent.com/d/1mZrGH61ikaJ05jZfMQsgq4L4cF4NeFti",
+             "https://lh3.googleusercontent.com/d/1dm4IHdzPl4OUDRMbI4wEYjoO4UVcqo7N"],
+             bookings: [ { start: "2026-09-23",days: 5 } ]
+  },
+   {
+    name: "Precious Greystone", 
+    category: "Premium Dresses",
+    colour: "Greystone",
+    sizes: ["S","M"],
+    price: 3500,
+    available: false,
+    images: ["https://lh3.googleusercontent.com/d/1-Cr8hPvr2sRl3cNDPgvnTj90op_kYjvV",
+             "https://lh3.googleusercontent.com/d/1o1jZJTDvhHgcxUlyieDgA607gfBiPKJS"],
+             bookings: [ { start: "2026-07-31",days: 1 },{ start: "2026-08-01",days: 5 }
+                        ,{ start: "2026-08-07",days: 3 },{ start: "2026-08-10",days: 5 }]
+  },
+  {
+    name: "Precious Bluestone", 
+    category: "Premium Dresses",
+    colour: "Bluestone",
+    sizes: ["S","M"],
+    price: 3500,
+    available: false,
+    images: ["https://lh3.googleusercontent.com/d/12T6LlAsGF5S0P1uIgkxf1YkG2-1NDBd-",
+             "https://lh3.googleusercontent.com/d/1tu_ihMrv7T0S5-MJyNjXuMlsFm5l1RF4"],
+             bookings: [ { start: "2026-08-01",days: 5 } ]
+  },
+  {
+    name: "Thimna Dress", 
+    category: "Premium Dresses",
+    colour: "Navy Blue",
+    sizes: ["S","M"],
+    price: 3500,
+    available: false,
+    images: ["https://lh3.googleusercontent.com/d/1fWEIyfNBjTqrKC__n0X0wzQlbHR7_MIg",
+             "https://lh3.googleusercontent.com/d/1ceVasq-TYkBRL8fd7zcvxIu__zYwBjae"]
+  },
+  {
+    name: "Umi Dress", 
+    category: "Premium Dresses",
+    colour: "Cherry Red",
+    sizes: ["S","M"],
+    price: 3500,
+    available: false,
+    images: ["https://lh3.googleusercontent.com/d/1HyxbaQw11TA7l0CmanvgVZ2xQXYxLgsG",
+             "https://lh3.googleusercontent.com/d/1YaXf5TpPvF36xs3F23ZPkg-vyVv2WCJt"],
+             bookings: [ { start: "2026-07-31", days: 5 } ]
+  },
+ 
+
+  /* signature dresses */
+  {
+    name: "Precious Diamond  Frost",
+    category: "Signature Dresses",
+    colour: "Ice Blue",
+    sizes: ["S","M","L"],
+    price: 4000,
+    available: false,
+    images: ["https://lh3.googleusercontent.com/d/1ZwiJDVUgtaqipJOMmkManScqlZoG8Y0n",
+             "https://lh3.googleusercontent.com/d/1I1cWrMIQte5tzFIYBO3mSx_UMfwwqZ9j"]
+  },    
+   {
+    name: "Precious Golden heiress Dress",
+    category: "Signature Dresses",
+    colour: "Gold",
+    sizes: ["M","L"],
+    price: 4000,
+    available: false,
+    images: ["https://lh3.googleusercontent.com/d/131didy52WmcuGZ2jbFk3iAd3LAwi6eOy",
+             "https://lh3.googleusercontent.com/d/1kxIWjoIHsSs94h_tHhBYo8U4onUUTkZ1"]
+  },
+   {
+    name: "Precious Lavendor Noir",
+    category: "Signature Dresses",
+    colour: "lavender",
+    sizes: ["M","L"],
+    price: 4000,
+    available: false,
+    images: ["https://lh3.googleusercontent.com/d/1_3I6V6yA-tobHmoubn0Ndxnm74UeKrw8",
+             "https://lh3.googleusercontent.com/d/1gB4EDxF9dJIl1satv4mr30rK94uZH67G"]
+  },
+   {
+    name: "Precious Lumiere",
+    category: "Signature Dresses",
+    colour: "Rose Gold",
+    sizes: ["M","L"],
+    price: 4000,
+    available: false,
+    images: ["https://lh3.googleusercontent.com/d/1h16m_20-FRA3j6iuDrTyPK1uOUBUdXGC",
+              "https://lh3.googleusercontent.com/d/1nrVPqBNdSE0o7VHYNuwFiTS3ovByBWr1"],
+    bookings:[{ start: "2026-08-07",days: 5 }]
+  },
+   {
+    name: "Precious Mandisa",
+    category: "Signature Dresses",
+    colour: "Nude",
+    sizes: ["M","L"],
+    price: 4000,
+    available: false,
+    images: ["https://lh3.googleusercontent.com/d/1t_IzASTJOKhA8vmoIPXnbV1DmPZJYYlq",
+             "https://lh3.googleusercontent.com/d/1ouAfCRephhg_X8FokPVswp4k-S1vDv0m"],
+             bookings: [ { start: "2026-07-31",days: 5 },{ start: "2026-08-22",days: 5 }
+                        ,{ start: "2026-08-07",days: 5 } ]
+  },
+   {
+    name: "Precious Midnight Sapphire",
+    category: "Signature Dresses",
+    colour: "Midnight Sapphire",
+    sizes: ["M","L"],
+    price: 4000,
+    available: false,
+    images: ["https://lh3.googleusercontent.com/d/1oxF0lL3Y955dPqki68YGnJ6x2NeOOWTE",
+             "https://lh3.googleusercontent.com/d/15jadS3xnj0RHOVB8IJhjTaBxjdxSRgnC"]
+  },
+   {
+    name: "Precious Monaco Dress",
+    category: "Signature Dresses",
+    colour: "Silver",
+    sizes: ["M","L"],
+    price: 4000,
+    available: false,
+    images: ["https://lh3.googleusercontent.com/d/1XYlz-jTBLF9SBgqF3soiGegN5DXMhPUr",
+             "https://lh3.googleusercontent.com/d/1rnCmfgZvb4PYUQyrjTKKIee-MzQeK8zn"],
+    bookings:[{ start: "2026-07-31",days: 5 } ]         
+  },
+   {
+    name: "Precious Silver Tussle",
+    category: "Signature Dresses",
+    colour: "Silver",
+    sizes: ["M","L"],
+    price: 4000,
+    available: false,
+    images: ["https://lh3.googleusercontent.com/d/1qc6xOLlc566u6fgp6mpoywM7VPt_XNe1",
+             "https://lh3.googleusercontent.com/d/1Mb7YLGbLSTvN982if_QJfmY68GywrSvl"],
+    bookings:[{ start: "2026-08-31",days: 5 },{ start: "2026-08-14",days: 5 } 
+             ,{ start: "2026-09-25",days: 5 }]         
+  },
+   {
+    name: "Precious Yolanda",
+    category: "Signature Dresses",
+    colour: "Silver",
+    sizes: ["M","L"],
+    price: 4000,
+    available: false,
+    images: ["https://lh3.googleusercontent.com/d/11KlFKF5yQMOMssLDdeIeNLdYKjaOmbPy",
+             "https://lh3.googleusercontent.com/d/1FnaMn0X1fmOCZN1ttecQh9dtcGoBAqAL"]
+  },
+  {
+    name: "Precious Celestine Dress",
+    category: "Signature Dresses",
+    colour: "Silver",
+    sizes: ["M","L"],
+    price: 4000,
+    available: false,
+    images: ["https://lh3.googleusercontent.com/d/1-48ACR72vKjTjnh6_g6gIG9vBgUezExf",
+             "https://lh3.googleusercontent.com/d/1Bq79UCeilOareYR9IpsenY45eQmStX_z"],
+    bookings:[{ start: "2026-07-31",days: 5 }]         
+  },
+
+  /* short dresses */
+  {
+    name: "Precious Obsidian ",
+    category: "Short Dresses",
+    colour: "Obsidian Black",
+    sizes: ["S","M","L"],
+    price: 2000,
+    available: false,
+    images: ["https://lh3.googleusercontent.com/d/1IHlQvzExg4ToGg8i4FHIyaWXGzTb-Z0T",
+             "https://lh3.googleusercontent.com/d/11o0--djh71YIvr474MwrWJ4rtl6M3oSG"]
+  },
+  {
+    name: "Precious Pink Ember",
+    category: "Short Dresses",
+    colour: "Pink Ember",
+    sizes: ["S","M","L"],
+    price: 2000,
+    available: false,
+    images: ["https://lh3.googleusercontent.com/d/1bqAyT1sjeBru_IFj1IIqtQMRGwu8QFNY",
+              "https://lh3.googleusercontent.com/d/1p-nNkHRD5ANmsKXDfixU_ZoTG1AhbfYp"]
+  },
+  {
+    name: "Precious Snowfall",
+    category: "Short Dresses",
+    colour: "Snow White",
+    sizes: ["S","M","L"],
+    price: 2000,
+    available: false,
+    images: ["https://lh3.googleusercontent.com/d/1jRwsE2PEqhYTwT5jWyJVvOho9TMTKNe_",
+             "https://lh3.googleusercontent.com/d/1bT8FLtwOO5pc9bTrIcr50b9KHiMkdmXb"]
+  },
+  {
+    name: "Precious Sovereign Night",
+    category: "Short Dresses",
+    colour: "Sovereign Night",
+    sizes: ["S","M","L"],
+    price: 2000,
+    available: false,
+    images: ["https://lh3.googleusercontent.com/d/14nKNqXYjniV3fvB-uB3E0-2fFMsf7ASl",
+             "https://lh3.googleusercontent.com/d/1Yl5Q1NZEW81-Ku7Ok04yOC7OhQPwFQj0"]
+  },
+  {
+    name: "Precious Sunstone",
+    category: "Short Dresses",
+    colour: "Sunstone",
+    sizes: ["S","M","L"],
+    price: 2000,
+    available: false,
+    images: ["https://lh3.googleusercontent.com/d/17d8BIshxriIOPbbCfnlu9kNSUjw8spYC",
+             "https://lh3.googleusercontent.com/d/1OqBBcJkvjiDkRG-5kx-NMHwghwFnbMR0"]
+  },
+
+ /* standard dresses */
+  {
+    name: "Babalwa Dress",
+    category: "Standard Dresses",
+    colour: "Light Blue",
+    sizes: ["S","M","L","XL"],
+    price: 2500,
+    available: false,
+    images: ["https://lh3.googleusercontent.com/d/1m3NxHSJ1S1T0AuhSfHaT3CVadhfLUyhv",
+             "https://lh3.googleusercontent.com/d/15KBmn7UoaEPDw0b2vASG1o4MREH4ZUPJ"],
+             bookings: [ { start: "2026-07-31",days: 5 } ]
+  },
+  {
+    name: "Baphiwe Dress",
+    category: "Standard Dresses",
+    colour: "Nude",
+    sizes: ["S","M","L","XL"],
+    price: 2500,
+    available: false,
+    images: ["https://lh3.googleusercontent.com/d/1pqGifyULYnhCy4j170gwsyE2jmkygY4V",
+             "https://lh3.googleusercontent.com/d/1qeJpzWDA16yqJb65vEN2nhP6g9nLOCiN"]
+  },
+  {
+    name: "Kayla Dress",
+    category: "Standard Dresses",
+    colour: "Black",
+    sizes: ["S","M","L","XL"],
+    price: 2500,
+    available: false,
+    images: ["https://lh3.googleusercontent.com/d/1bvfy6WLIEhX39INF7pCySnswkCDC6LBK",
+             "https://lh3.googleusercontent.com/d/1AP9BMfoR3HV210qGie1z2xCjQlcgcYxj"]
+  },
+   {
+    name: "Precious Asteria Dress",
+    category: "Standard Dresses",
+    colour: "White",
+    sizes: ["S","M","L","XL"],
+    price: 2500,
+    available: false,
+    images: ["https://lh3.googleusercontent.com/d/1oC5zPHd9STqZM38o4FCyAruUJE1I53jS",
+             "https://lh3.googleusercontent.com/d/16MQ02gNwZoYKteuLZLIRBYbifTKSxEM1"],
+      bookings:[{ start: "2026-08-01",days: 5 }]       
+  },
+  {
+    name: "Precious Blue Aurora",
+    category: "Standard Dresses",
+    colour: "Aurora Blue",
+    sizes: ["S","M","L","XL"],
+    price: 2500,
+    available: false,
+    images: ["https://lh3.googleusercontent.com/d/1wvt7haE7KkLtCdcbLrK0FKL_ps3OHfZL",
+             "https://lh3.googleusercontent.com/d/1TG4_MxEfw_t-J7NDp2fXKQ6M5IqzlfQ2"]
+  },
+  {
+    name: "Precious Vivienne ",
+    category: "Standard Dresses",
+    colour: "Gold",
+    sizes: ["S","M","L","XL"],
+    price: 2500,
+    available: false,
+    images: ["https://lh3.googleusercontent.com/d/1GJ7mH2MVu_8BhDfKo9xVvtvWvhNg92pf",
+             "https://lh3.googleusercontent.com/d/1_kqzNqNMUR-cLQZv2-x3yRChcL99Yceo"]
+  },
+  {
+    name: "Twin 1 Dress",
+    category: "Standard Dresses",
+    colour: "Nude",
+    sizes: ["S","M","L","XL"],
+    price: 2500,
+    available: false,
+    images: ["https://lh3.googleusercontent.com/d/1XOn0hMOfQaRBCbLBcDAL9BYR6v92ZLUj",
+             "https://lh3.googleusercontent.com/d/1L4PS6qaUWHjg8gpl7nvCZOpj-nTFgq4Q"]
+  },
+  {
+    name: "Twin 2 Dress",
+    category: "Standard Dresses",
+    colour: "Nude",
+    sizes: ["S","M","L","XL"],
+    price: 2500,
+    available: false,
+    images: ["https://lh3.googleusercontent.com/d/1zKKi2MvM3W0gOTFmsNazaUGS5opxhM1s",]
+  },
+  {
+    name: "Twin Gold Dress",
+    category: "Standard Dresses",
+    colour: "Gold",
+    sizes: ["S","M","L","XL"],
+    price: 2500,
+    available: false,
+    images: ["https://lh3.googleusercontent.com/d/1rwSfMazvB7MBDX7dAjRx-FsXmpeSXD8M",
+             "https://lh3.googleusercontent.com/d/1exEkjKIuN9MxROYwFMcg9LGRBr3XMDyf"]
+  },
+  {
+    name: "Twin Red Dress",
+    category: "Standard Dresses",
+    colour: "Red",
+    sizes: ["S","M","L","XL"],
+    price: 2500,
+    available: false,
+    images: ["https://lh3.googleusercontent.com/d/1rSxCwtStmuJo9ZwvvuR8W_WHxLkwW6-h",
+             "https://lh3.googleusercontent.com/d/1nTAvHK_62L3AD7b0TfRNr10IXd-D6yGv"]
+  },
+];
+
+/* ============================================================
+   Below this line is the engine — no need to edit
+   ============================================================ */
+
+function getDressImages(d){
+  if (Array.isArray(d.images) && d.images.length) return d.images;
+  if (d.image) return [d.image];
+  return [];
+}
+
+function toFullUrl(src){
+  const isAbsolute = /^https?:\/\//i.test(src);
+  return isAbsolute ? src : `${location.origin}${location.pathname.replace(/[^/]*$/, '')}${src}`;
+}
+
+// Expands each { start, days } booking into a Set of "YYYY-MM-DD" strings it blocks
+function getBookedDateSet(d){
+  const set = new Set();
+  (d.bookings || []).forEach(b => {
+    if (!b || !b.start) return;
+    const days = b.days || BOOKING_DURATION_DAYS;
+    const start = new Date(b.start + 'T00:00:00');
+    for (let i = 0; i < days; i++) {
+      const dt = new Date(start);
+      dt.setDate(dt.getDate() + i);
+      set.add(toDateStr(dt.getFullYear(), dt.getMonth(), dt.getDate()));
+    }
+  });
+  return set;
+}
+
+function isDressCurrentlyOut(d){
+  const today = new Date(); today.setHours(0,0,0,0);
+  const todayStr = toDateStr(today.getFullYear(), today.getMonth(), today.getDate());
+  return getBookedDateSet(d).has(todayStr);
+}
+
+function waLink(d, dateStr){
+  let msgText = `Hi! I'd love to reserve the "${d.name}" from ${BRAND_NAME}.`;
+  if (dateStr) {
+    const dObj = new Date(dateStr + 'T00:00:00');
+    const formatted = dObj.toLocaleDateString('en-ZA', { weekday:'long', day:'numeric', month:'long', year:'numeric' });
+    msgText += `\nRequested date: ${formatted}`;
+  }
+  const imgs = getDressImages(d);
+  if (imgs.length) {
+    // Turn a relative path into a full URL so it's clickable inside WhatsApp
+    msgText += `\nPhoto: ${toFullUrl(imgs[0])}`;
+  }
+  const msg = encodeURIComponent(msgText);
+  return `https://wa.me/${WHATSAPP_NUMBER}?text=${msg}`;
+}
+
+function dressCardHTML(d){
+  const imgs = getDressImages(d);
+  const isOut = isDressCurrentlyOut(d);
+
+  let sliderInner;
+  if (imgs.length) {
+    const slides = imgs.map(src => `<div class="img-slide"><img src="${src}" alt="${d.name}" loading="lazy"></div>`).join('');
+    const navHTML = imgs.length > 1
+      ? `<button class="img-nav prev" aria-label="Previous photo">‹</button>
+         <button class="img-nav next" aria-label="Next photo">›</button>
+         <div class="img-dots">${imgs.map((_, i) => `<span class="img-dot${i === 0 ? ' active' : ''}"></span>`).join('')}</div>`
+      : '';
+    sliderInner = `<div class="img-track">${slides}</div>${navHTML}`;
+  } else {
+    sliderInner = `<div class="img-placeholder">Photo coming soon<br>— ${d.name} —</div>`;
+  }
+
+  return `
+    <div class="card">
+      <span class="tag ${isOut ? 'unavailable' : ''}">${isOut ? 'Currently Out' : 'Available'}</span>
+      <div class="img-slider">${sliderInner}</div>
+      <div class="info">
+        <h3>${d.name}</h3>
+        <div class="meta">${d.category} · ${d.colour}</div>
+        <div class="price">R${d.price} <span>/ rental</span></div>
+        <button class="reserve" data-dress-name="${encodeURIComponent(d.name)}">Choose a Date to Reserve</button>
+      </div>
+    </div>
+  `;
+}
+
+// Wires up the prev/next buttons and dot indicators for every slider currently in the DOM
+function initImageSliders(container){
+  container.querySelectorAll('.img-slider').forEach(slider => {
+    const track = slider.querySelector('.img-track');
+    const dots = slider.querySelectorAll('.img-dot');
+    const prevBtn = slider.querySelector('.img-nav.prev');
+    const nextBtn = slider.querySelector('.img-nav.next');
+    if (!track) return;
+
+    function updateDots(){
+      if (!dots.length) return;
+      const index = Math.round(track.scrollLeft / track.clientWidth);
+      dots.forEach((dot, i) => dot.classList.toggle('active', i === index));
+    }
+    track.addEventListener('scroll', updateDots, { passive:true });
+    if (prevBtn) prevBtn.addEventListener('click', () => track.scrollBy({ left: -track.clientWidth, behavior:'smooth' }));
+    if (nextBtn) nextBtn.addEventListener('click', () => track.scrollBy({ left: track.clientWidth, behavior:'smooth' }));
+  });
+}
+
+/* ---------- BOOKING CALENDAR ---------- */
+let bookingState = { dress:null, year:0, month:0, selectedDate:null };
+
+function pad2(n){ return n < 10 ? '0' + n : '' + n; }
+function toDateStr(y, m, day){ return `${y}-${pad2(m+1)}-${pad2(day)}`; }
+
+function openBookingModal(dressName){
+  const d = dresses.find(x => x.name === dressName);
+  if (!d) return;
+  const today = new Date();
+  bookingState = { dress:d, year: today.getFullYear(), month: today.getMonth(), selectedDate:null };
+  document.getElementById('modalDressName').textContent = d.name;
+  document.getElementById('calSelectedInfo').textContent = '';
+  const confirmBtn = document.getElementById('calConfirm');
+  confirmBtn.disabled = true;
+  confirmBtn.textContent = 'Select a date to continue';
+  renderCalendar();
+  document.getElementById('bookingModal').classList.add('open');
+}
+
+function closeBookingModal(){
+  document.getElementById('bookingModal').classList.remove('open');
+}
+
+function renderCalendar(){
+  const { dress, year, month, selectedDate } = bookingState;
+  const monthNames = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+  document.getElementById('calMonthLabel').textContent = `${monthNames[month]} ${year}`;
+
+  const today = new Date(); today.setHours(0,0,0,0);
+  const firstDay = new Date(year, month, 1).getDay();
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  const booked = dress ? getBookedDateSet(dress) : new Set();
+
+  let cells = '';
+  for (let i = 0; i < firstDay; i++) cells += `<div class="cal-day empty"></div>`;
+  for (let day = 1; day <= daysInMonth; day++) {
+    const dateObj = new Date(year, month, day);
+    const dateStr = toDateStr(year, month, day);
+    const isPast = dateObj < today;
+    const isBooked = booked.has(dateStr);
+    const isSelected = selectedDate === dateStr;
+    let cls = 'cal-day';
+    if (isPast) cls += ' disabled';
+    else if (isBooked) cls += ' booked';
+    else if (isSelected) cls += ' selected';
+    cells += `<div class="${cls}" data-date="${dateStr}" title="${isBooked ? 'Already booked' : ''}">${day}</div>`;
+  }
+  document.getElementById('calGrid').innerHTML = cells;
+
+  const currentIsThisMonth = (year === today.getFullYear() && month === today.getMonth());
+  document.getElementById('calPrev').disabled = currentIsThisMonth;
+}
+
+function resetSelection(){
+  bookingState.selectedDate = null;
+  document.getElementById('calSelectedInfo').textContent = '';
+  const confirmBtn = document.getElementById('calConfirm');
+  confirmBtn.disabled = true;
+  confirmBtn.textContent = 'Select a date to continue';
+}
+
+document.getElementById('bookingModal').addEventListener('click', e => {
+  if (e.target.id === 'bookingModal') closeBookingModal();
+});
+document.getElementById('modalCloseBtn').addEventListener('click', closeBookingModal);
+
+document.getElementById('calGrid').addEventListener('click', e => {
+  const cell = e.target.closest('.cal-day');
+  if (!cell || cell.classList.contains('empty') || cell.classList.contains('disabled') || cell.classList.contains('booked')) return;
+  bookingState.selectedDate = cell.dataset.date;
+  renderCalendar();
+  const dObj = new Date(bookingState.selectedDate + 'T00:00:00');
+  const formatted = dObj.toLocaleDateString('en-ZA', { weekday:'long', day:'numeric', month:'long', year:'numeric' });
+  document.getElementById('calSelectedInfo').textContent = `Selected: ${formatted}`;
+  const confirmBtn = document.getElementById('calConfirm');
+  confirmBtn.disabled = false;
+  confirmBtn.textContent = 'Reserve on WhatsApp';
+});
+
+document.getElementById('calPrev').addEventListener('click', () => {
+  bookingState.month--;
+  if (bookingState.month < 0) { bookingState.month = 11; bookingState.year--; }
+  resetSelection();
+  renderCalendar();
+});
+document.getElementById('calNext').addEventListener('click', () => {
+  bookingState.month++;
+  if (bookingState.month > 11) { bookingState.month = 0; bookingState.year++; }
+  resetSelection();
+  renderCalendar();
+});
+document.getElementById('calConfirm').addEventListener('click', () => {
+  if (!bookingState.selectedDate || !bookingState.dress) return;
+  const link = waLink(bookingState.dress, bookingState.selectedDate);
+  window.open(link, '_blank', 'noopener');
+  closeBookingModal();
+});
+
+/* ---------- ROUTING ---------- */
+// Home: #/
+// Category: #/category/Signature%20Dresses
+
+function parseHash(){
+  const hash = decodeURIComponent(location.hash || "#/");
+  const parts = hash.replace(/^#\/?/, "").split("/").filter(Boolean);
+  if (parts[0] === "category" && parts[1]) {
+    return { view: "category", category: parts[1] };
+  }
+  if (parts[0] === "guidelines") {
+    return { view: "guidelines" };
+  }
+  return { view: "home" };
+}
+
+function renderHome(){
+  document.getElementById('heroTitle').textContent = "The Wardrobe";
+  document.getElementById('heroSub').textContent = "Choose a category to browse. Tap Reserve on any dress — your request goes straight to us on WhatsApp.";
+
+  const app = document.getElementById('app');
+  app.innerHTML = `<div class="cat-grid" id="catGrid"></div>`;
+  const grid = document.getElementById('catGrid');
+
+  CATEGORIES.forEach((cat, i) => {
+    const count = dresses.filter(d => d.category === cat.key).length;
+    const tile = document.createElement('a');
+    tile.className = "cat-tile";
+    tile.href = `#/category/${encodeURIComponent(cat.key)}`;
+    tile.innerHTML = `
+      <span class="cat-index">0${i+1}</span>
+      <h2>${cat.key}</h2>
+      <div class="cat-tagline">${cat.tagline}</div>
+      <div class="cat-count">${count} dress${count === 1 ? '' : 'es'}</div>
+      <span class="cat-arrow">→</span>
+    `;
+    grid.appendChild(tile);
+  });
+}
+
+function renderCategory(categoryKey){
+  const catMeta = CATEGORIES.find(c => c.key === categoryKey);
+  document.getElementById('heroTitle').textContent = catMeta ? catMeta.key : categoryKey;
+  document.getElementById('heroSub').textContent = catMeta ? catMeta.tagline : "";
+
+  const app = document.getElementById('app');
+  app.innerHTML = `
+    <div class="cat-header">
+      <a class="back-link" href="#/">← All Categories</a>
+    </div>
+    <div class="filters">
+      <input id="search" type="text" placeholder="Search by name or colour…">
+      <span class="count" id="count"></span>
+    </div>
+    <div class="grid" id="grid"></div>
+    <div class="empty" id="empty" style="display:none;">No dresses match those filters — try clearing a search.</div>
+  `;
+
+  const categoryDresses = dresses.filter(d => d.category === categoryKey);
+
+  document.getElementById('grid').addEventListener('click', e => {
+    const btn = e.target.closest('.reserve');
+    if (btn) openBookingModal(decodeURIComponent(btn.dataset.dressName));
+  });
+
+  function draw(){
+    const q = document.getElementById('search').value.trim().toLowerCase();
+
+    const filtered = categoryDresses.filter(d => {
+      const matchesQ = !q || d.name.toLowerCase().includes(q) || d.colour.toLowerCase().includes(q);
+      return matchesQ;
+    });
+
+    document.getElementById('count').textContent = `${filtered.length} of ${categoryDresses.length} dresses`;
+
+    const grid = document.getElementById('grid');
+    const empty = document.getElementById('empty');
+    grid.innerHTML = filtered.map(dressCardHTML).join("");
+    empty.style.display = filtered.length === 0 ? "block" : "none";
+    initImageSliders(grid);
+  }
+
+  document.getElementById('search').addEventListener('input', draw);
+  draw();
+}
+
+function renderGuidelines(){
+  document.getElementById('heroTitle').textContent = "Prices & Rental Guidelines";
+  document.getElementById('heroSub').textContent = "Everything to know before you book — please read this before reserving a dress.";
+
+  const app = document.getElementById('app');
+
+  const priceRows = PRICING_TIERS.map(p => `
+    <tr><td>${p.tier}</td><td>${p.price}</td></tr>
+  `).join('');
+
+  const sectionsHTML = GUIDELINE_SECTIONS.map(s => {
+    const body = s.type === "list"
+      ? `<ul>${s.items.map(i => `<li>${i}</li>`).join('')}</ul>`
+      : `<p>${s.text}</p>`;
+    return `<div class="guide-section"><h2>${s.heading}</h2>${body}</div>`;
+  }).join('');
+
+  app.innerHTML = `
+    <div class="cat-header">
+      <a class="back-link" href="#/">← All Categories</a>
+    </div>
+    <div class="guide-wrap">
+      <div class="guide-section">
+        <h2>Rental Pricing</h2>
+        <table class="price-table">
+          <tr><th>Category</th><th>Price Range</th></tr>
+          ${priceRows}
+        </table>
+      </div>
+      ${sectionsHTML}
+    </div>
+  `;
+}
+
+function router(){
+  const route = parseHash();
+  if (route.view === "category") {
+    renderCategory(route.category);
+  } else if (route.view === "guidelines") {
+    renderGuidelines();
+  } else {
+    renderHome();
+  }
+  window.scrollTo(0, 0);
+}
+
+window.addEventListener('hashchange', router);
+router();
+
+/* ---- Loading screen: tracks real progress of dress photos ---- */
+(function initLoader(){
+  const loader = document.getElementById('loader');
+  const barFill = document.getElementById('loaderBarFill');
+  const status = document.getElementById('loaderStatus');
+  const MIN_DISPLAY_MS = 1100; // keeps the screen from flashing if images load instantly
+  const startTime = Date.now();
+
+  const imagesToLoad = dresses.flatMap(d => d.images || []);
+  const total = imagesToLoad.length;
+  let loaded = 0;
+
+  function updateProgress(){
+    const pct = total === 0 ? 100 : Math.round((loaded / total) * 100);
+    barFill.style.width = pct + "%";
+    status.textContent = total === 0
+      ? "Almost there…"
+      : `Loading dresses… ${loaded}/${total}`;
+  }
+
+  function finish(){
+    const elapsed = Date.now() - startTime;
+    const wait = Math.max(0, MIN_DISPLAY_MS - elapsed);
+    status.textContent = "Welcome";
+    setTimeout(() => loader.classList.add('hidden'), wait);
+  }
+
+  if (total === 0){
+    updateProgress();
+    finish();
+    return;
+  }
+
+  updateProgress();
+  imagesToLoad.forEach(src => {
+    const img = new Image();
+    img.onload = img.onerror = () => {
+      loaded++;
+      updateProgress();
+      if (loaded === total) finish();
+    };
+    img.src = src;
+  });
+
+  // Safety net: never let the loader hang forever if an image stalls
+  setTimeout(finish, 6000);
+})();
+</script>
+</body>
+</html>
