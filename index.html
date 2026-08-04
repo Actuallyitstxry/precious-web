@@ -636,7 +636,6 @@ const BOOKING_DURATION_DAYS = 4; // how many days a dress stays "out" after each
 const CATEGORIES = [
   { key: "Signature Dresses", tagline: "Our most requested, one-of-a-kind pieces" },
   { key: "Premium Dresses",   tagline: "Top-tier gowns for standout occasions" },
-  { key: "Short Dresses",     tagline: "Cocktail-length, easy elegance" },
   { key: "Standard Dresses",  tagline: "Everyday rental essentials" }
 ];
 
@@ -647,11 +646,11 @@ const CATEGORIES = [
    paragraph text or a bullet list.
    ============================================================ */
 const PRICING_TIERS = [
-  { tier: "Standard Dresses",  price: "R2 000" },
-  { tier: "Short Dresses",     price: "R2 500" },
+  { tier: "Standard Dresses",  price: "R2 500" },
   { tier: "Premium Dresses",   price: "R3 500" },
   { tier: "Signature Dresses", price: "R4 000" },
-  { tier: "Security Deposit (refundable)", price: "R500 KZN · R1000 Out of Province" }
+  { tier: "Security Deposit (refundable)", price: "R500 KZN · R1000 Out of Province" },
+  { tier: "Courier Fee",       price: "R150" }
 ];
 
 const GUIDELINE_SECTIONS = [
@@ -667,6 +666,7 @@ const GUIDELINE_SECTIONS = [
       "A 50% deposit (or full payment)",
       "Contact details",
       "Confirmed event date",
+      "A courier fee of R150 applies to all deliveries",
       "Bookings are secured once payments have been made"
     ]
   },
@@ -708,7 +708,7 @@ const GUIDELINE_SECTIONS = [
    Fields:
    name      – dress name
    category  – must be exactly one of: "Signature Dresses", "Premium Dresses",
-               "Short Dresses", "Standard Dresses"
+               "Standard Dresses"
    colour    – main colour, shown under the name
    sizes     – array of available sizes, e.g. ["S","M","L"]
    price     – rental price as a number (no currency symbol)
@@ -738,11 +738,8 @@ const GUIDELINE_SECTIONS = [
    3. Use this format: https://lh3.googleusercontent.com/d/FILE_ID
    (Regular Drive share links won't display as images — this format will.)
 
-   NOTE ON CATEGORIES: I've placed the 6 sample dresses below across all
-   4 tiers as a starting example. "Premium"/"Signature" vs "Short"/"Standard"
-   can overlap in real life (a short dress could also be premium priced) —
-   since each dress can only sit in one category here, decide which single
-   bucket best fits each real dress as you add them.
+   NOTE ON CATEGORIES: each dress sits in exactly one of the 3 tiers —
+   decide which single bucket best fits each real dress as you add them.
    ============================================================ */
 
 const dresses = [
@@ -1145,58 +1142,6 @@ const dresses = [
     images: ["https://lh3.googleusercontent.com/d/1-48ACR72vKjTjnh6_g6gIG9vBgUezExf",
              "https://lh3.googleusercontent.com/d/1Bq79UCeilOareYR9IpsenY45eQmStX_z"],
     bookings:[{ start: "2026-07-31",days: 5 }]         
-  },
-
-  /* short dresses */
-  {
-    name: "Precious Obsidian ",
-    category: "Short Dresses",
-    colour: "Obsidian Black",
-    sizes: ["S","M","L"],
-    price: 2000,
-    available: false,
-    images: ["https://lh3.googleusercontent.com/d/1IHlQvzExg4ToGg8i4FHIyaWXGzTb-Z0T",
-             "https://lh3.googleusercontent.com/d/11o0--djh71YIvr474MwrWJ4rtl6M3oSG"]
-  },
-  {
-    name: "Precious Pink Ember",
-    category: "Short Dresses",
-    colour: "Pink Ember",
-    sizes: ["S","M","L"],
-    price: 2000,
-    available: false,
-    images: ["https://lh3.googleusercontent.com/d/1bqAyT1sjeBru_IFj1IIqtQMRGwu8QFNY",
-              "https://lh3.googleusercontent.com/d/1p-nNkHRD5ANmsKXDfixU_ZoTG1AhbfYp"]
-  },
-  {
-    name: "Precious Snowfall",
-    category: "Short Dresses",
-    colour: "Snow White",
-    sizes: ["S","M","L"],
-    price: 2000,
-    available: false,
-    images: ["https://lh3.googleusercontent.com/d/1jRwsE2PEqhYTwT5jWyJVvOho9TMTKNe_",
-             "https://lh3.googleusercontent.com/d/1bT8FLtwOO5pc9bTrIcr50b9KHiMkdmXb"]
-  },
-  {
-    name: "Precious Sovereign Night",
-    category: "Short Dresses",
-    colour: "Sovereign Night",
-    sizes: ["S","M","L"],
-    price: 2000,
-    available: false,
-    images: ["https://lh3.googleusercontent.com/d/14nKNqXYjniV3fvB-uB3E0-2fFMsf7ASl",
-             "https://lh3.googleusercontent.com/d/1Yl5Q1NZEW81-Ku7Ok04yOC7OhQPwFQj0"]
-  },
-  {
-    name: "Precious Sunstone",
-    category: "Short Dresses",
-    colour: "Sunstone",
-    sizes: ["S","M","L"],
-    price: 2000,
-    available: false,
-    images: ["https://lh3.googleusercontent.com/d/17d8BIshxriIOPbbCfnlu9kNSUjw8spYC",
-             "https://lh3.googleusercontent.com/d/1OqBBcJkvjiDkRG-5kx-NMHwghwFnbMR0"]
   },
 
  /* standard dresses */
