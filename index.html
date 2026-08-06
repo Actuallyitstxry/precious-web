@@ -395,6 +395,24 @@
     letter-spacing:0.1em;
     text-transform:uppercase;
   }
+  .powered-by{
+    display:block;
+    margin-top:10px;
+    font-size:10px;
+    letter-spacing:0.08em;
+    text-transform:none;
+    color:rgba(243,236,226,0.25);
+  }
+  .powered-by a{
+    color:var(--rose-light);
+    text-decoration:none;
+    border-bottom:1px solid rgba(216,183,154,0.3);
+    transition:color .2s ease, border-color .2s ease;
+  }
+  .powered-by a:hover{
+    color:var(--cream);
+    border-color:var(--rose-light);
+  }
 
   /* LOADING SCREEN */
   #loader{
@@ -618,7 +636,9 @@
   </div>
 </div>
 
-<footer>PreciousT Collection · Rentals by request · Updated regularly</footer>
+<footer>PreciousT Collection · Rentals by request · Updated regularly
+  <span class="powered-by">Powered by Urus Vision</span>
+</footer>
 
 <script>
 /* ============================================================
@@ -1636,3 +1656,4 @@ router();
 </script>
 </body>
 </html>
+
