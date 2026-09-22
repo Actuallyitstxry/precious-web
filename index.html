@@ -413,6 +413,17 @@
     color:var(--cream);
     border-color:var(--rose-light);
   }
+  .admin-link{
+    color:inherit;
+    text-decoration:none;
+    opacity:0.35;
+    padding:0 6px;
+    transition:opacity .2s ease, color .2s ease;
+  }
+  .admin-link:hover{
+    opacity:1;
+    color:var(--rose-light);
+  }
 
   /* LOADING SCREEN */
   #loader{
@@ -637,7 +648,7 @@
 </div>
 
 <footer>PreciousT Collection · Rentals by request · Updated regularly
-  <span class="powered-by">Powered by Urus Vision</span>
+  <span class="powered-by">Powered by Urus Vision <a href="admin.html" class="admin-link" title="Team login">•</a></span>
 </footer>
 
 <script>
